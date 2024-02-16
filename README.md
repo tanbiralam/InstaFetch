@@ -1,6 +1,3 @@
-Sure, here's a sample README.md file for InstaFetcher:
-
-```markdown
 # InstaFetcher
 
 InstaFetcher is an open-source Instagram media downloader that allows users to effortlessly download photos, videos, and reels from Instagram. Whether you want to save your favorite content for offline viewing, sharing, or archiving, InstaFetcher has got you covered.
@@ -20,7 +17,7 @@ To get started with InstaFetcher, follow these steps:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/InstaFetcher.git
+git clone https://github.com/tanbiralam/InstaFetcher.git
 ```
 
 2. Navigate to the project directory:
@@ -61,15 +58,9 @@ Contributions are welcome and encouraged! To contribute to InstaFetcher, please 
 
 ## Support
 
-If you encounter any issues or have any questions or suggestions, feel free to open an issue on the [GitHub repository](https://github.com/your-username/InstaFetcher/issues). You can also reach out to the project maintainers for assistance.
+If you encounter any issues or have any questions or suggestions, feel free to open an issue on the [GitHub repository](https://github.com/tanbiralam/InstaFetcher/issues). You can also reach out to the project maintainers for assistance.
 
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
----
-
-© 2024 InstaFetcher Contributors. Made with ❤️
-```
-
-Replace `your-username` with your actual GitHub username in the URLs. This README covers the basic sections including project overview, features, getting started guide, usage instructions, contributing guidelines, support information, and license details. Feel free to customize it further based on your project's specific needs.
