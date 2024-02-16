@@ -1,0 +1,18 @@
+/* Custom Tailwind CSS */
+.hover-transparent:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.2);
+    z-index: -1; /* Pushes the pseudo-element behind the content */
+    transition: background-color 0.3s ease-in-out; /* Optional: Add a transition for the background color change */
+  }
+  
+  /* On hover, change the background color to fully transparent */
+  .hover-transparent:hover:after {
+    background-color: rgba(255, 255, 255, 0); /* Full transparent */
+  }
+  
