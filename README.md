@@ -62,5 +62,5 @@ If you encounter any issues or have any questions or suggestions, feel free to o
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/tanbiralam/InstaFetch/blob/main/LICENCE) file for details.
 
