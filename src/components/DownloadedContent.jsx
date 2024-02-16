@@ -75,7 +75,7 @@ const DownloadedContent = ({ image, video, type }) => {
             <div className="px-4 absolute bottom-2 w-full">
               <button
                 type="button"
-                className="flex justify-center items-center bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 w-full"
+                className="flex justify-center items-center bg-[#607274] text-white py-2 px-4 rounded-md hover:bg-[#B2A59B] focus:outline-none focus:ring focus:ring-blue-300 w-full"
                 onClick={handleDownload}
               >
                 <SvgDownload />
@@ -85,14 +85,6 @@ const DownloadedContent = ({ image, video, type }) => {
           </div>
         </div>
 
-        <button
-          type="button"
-          className="flex justify-center mt-4 items-center font-semibold bg-[#a40acb] text-white py-2 px-4 rounded-md hover:bg-pink-600 focus:outline-none focus:ring focus:ring-green-300 w-full"
-          onClick={handleSecondButtonClick}
-        >
-          {/* Add icon or text for the second button */}
-          <span className="ml-3">Download with app SnapInsta</span>
-        </button>
         <button
           type="button"
           className="flex justify-center mt-2 items-center bg-[#95a4a7] text-white py-2 px-4 rounded-md focus:outline-none focus:ring focus:ring-blue-300 w-full"

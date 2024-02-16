@@ -9,18 +9,14 @@ const Footer = () => {
         <div className="text-center md:text-left mb-6">
           <h3 className="text-2xl font-semibold mb-2">InstaFetch</h3>
           <p className="text-sm">Your Open-Source Gateway to Effortless Instagram Media Downloads.</p>
+          <p className="text-sm">Made with ❤️ by Tanbir</p>
         </div>
 
         {/* Navigation Links */}
         <div className="flex justify-between items-center mb-6">
-          <ul className="flex space-x-4 font-semibold">
-            <li className="text-white hover:text-white transition">Home</li>
-            <li className="text-white hover:text-white transition">Contribute</li>
-            <li className="text-white hover:text-white transition">Support</li>
-          </ul>
 
           {/* Copyright Section */}
-          <div className="text-xs text-gray-300">&copy; {new Date().getFullYear()} InstaFetch. All rights reserved</div>
+          <div className="text-xs text-gray-300">&copy; {new Date().getFullYear()} Tanbir Alam. All rights reserved</div>
         </div>
 
       </div>
