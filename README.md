@@ -1,4 +1,4 @@
-# InstaFetcher
+# InstaFetch
 
 InstaFetcher is an open-source Instagram media downloader that allows users to effortlessly download photos, videos, and reels from Instagram. Whether you want to save your favorite content for offline viewing, sharing, or archiving, InstaFetcher has got you covered.
 
