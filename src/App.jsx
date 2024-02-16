@@ -12,7 +12,7 @@ function App() {
   return (
     <Router>
       <div className="bg-gray-100">
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div></div>}>
           <Navbar />
           <Routes>
             <Route
