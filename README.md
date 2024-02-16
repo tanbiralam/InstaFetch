@@ -17,7 +17,7 @@ To get started with InstaFetcher, follow these steps:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/tanbiralam/InstaFetcher.git
+git clone https://github.com/tanbiralam/InstaFetch.git
 ```
 
 2. Navigate to the project directory:
@@ -58,7 +58,7 @@ Contributions are welcome and encouraged! To contribute to InstaFetcher, please 
 
 ## Support
 
-If you encounter any issues or have any questions or suggestions, feel free to open an issue on the [GitHub repository](https://github.com/tanbiralam/InstaFetcher/issues). You can also reach out to the project maintainers for assistance.
+If you encounter any issues or have any questions or suggestions, feel free to open an issue on the [GitHub repository](https://github.com/tanbiralam/InstaFetch/issues). You can also reach out to the project maintainers for assistance.
 
 ## License
 
