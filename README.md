@@ -10,9 +10,11 @@ InstaFetcher is an open-source Instagram media downloader that allows users to e
 - Built with React and Tailwind CSS.
 - Responsive design for optimal viewing on all devices.
 
+
 ## Getting Started
 
 To get started with InstaFetcher, follow these steps:
+
 
 1. Clone the repository:
 
@@ -32,13 +34,20 @@ cd InstaFetcher
 npm install
 ```
 
-4. Run the development server:
+4. Set up the environment variables by creating a `.env` file in the root directory of the project.
+
+**Environment Variables:**
+- `VITE_API_KEY`: API key for accessing Cloudinary API.
+- `VITE_CLOUDINARY_API_URL`: Cloudinary API URL for uploading images.
+- `VITE_CLOUDINARY_PRESET`: Preset for Cloudinary upload.
+
+5. Run the development server:
 
 ```bash
 npm run dev
 ```
 
-5. Open your browser and visit `http://localhost:3000` to use InstaFetcher.
+6. Open your browser and visit `http://localhost:3000` to use InstaFetcher.
 
 ## Usage
 
