@@ -2,12 +2,12 @@ import { useState, useRef } from "react";
 import DownloadedContent from "./DownloadedContent";
 import { getData } from "../../utils/upload";
 
-import paste from "../assets/paste.svg";
 import loader from "../assets/loader.svg";
-import down from "../assets/down.svg";
 
 
 import "./Tool.css";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 const ToolDownloader = () => {
   const inputRef = useRef(null);
@@ -19,9 +19,6 @@ const ToolDownloader = () => {
   const [isDownloaded, setDownloaded] = useState(false);
   const [downloadedData, setDownloadedData] = useState({});
   const [isLoading, setLoading] = useState(false);
-  const [isPasted, setIsPasted] = useState(false);
-  const [isInputFocused, setIsInputFocused] = useState(false);
-
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -31,18 +28,6 @@ const ToolDownloader = () => {
     setInputValue("");
   };
 
-  const handlePasteClick = () => {
-    navigator.clipboard.readText().then((clipText) => {
-      setInputValue(clipText);
-      setIsPasted(true);
-    });
-  };
-
-  const handleClearClick = () => {
-    setInputValue("");
-    setIsPasted(false);
-    inputRef.current.focus();
-  };
 
   const getDynamicHeaderText = () => {
     const headers = {
@@ -84,7 +69,7 @@ const ToolDownloader = () => {
     <>
       {/* Download Input Section */}
       <section
-        className="py-16 bg-[#3E3232]"
+        className="py-16 bg-[#32012F]"
       >
         <div className="container mx-auto text-center text-gray">
           <div className="flex flex-row justify-center items-center space-x-4 text-white font-normal">
@@ -362,53 +347,20 @@ const ToolDownloader = () => {
             onSubmit={submitHandler}
           >
             {/* Input */}
-            <div className="relative md:w-1/3">
-              <input
+            <div className="relative md:w-1/3 ">
+              <Input
                 type="text"
                 value={inputValue}
                 id="url"
                 ref={inputRef}
-                onFocus={() => setIsInputFocused(true)}
-                onBlur={() => setIsInputFocused(false)}
                 required
-                placeholder="Enter the Instagram URL"
-                className="w-full h-10 rounded-md py-2 px-4 text-gray-800 placeholder-gray-500 bg-white font-semibold z-10 relative"
+                placeholder="Paste the Instagram URL"
                 onChange={(e) => setInputValue(e.target.value)}
               />
-
-              {/* Paste Icon */}
-
-              {isPasted && (
-                <div
-                  className="absolute top-0 right-2 flex items-center  bg-[#ECB159]  border border-black bg-white-500 p-2 rounded-md  cursor-pointer z-20"
-                  onClick={handleClearClick}
-                >
-                  <span className="mr-1 font-medium text-sm">Clear</span>{" "}
-                  <span className="text-gray-600 h-4 w-4 font-bold flex justify-center items-center">
-                    X
-                  </span>
-                </div>
-              )}
-              {!isPasted && (
-                <div
-                  className="absolute top-0 right-2 gap-2 flex items-center bg-[#ECB159]/100 border border-black bg-white-500 p-2 rounded-md cursor-pointer z-20"
-                  onClick={handlePasteClick}
-                >
-                  <img src={paste} alt="Paste Icon" className="h-4 w-4" />
-                  <span className="mr-1 font-medium text-sm">Paste</span>{" "}
-                </div>
-              )}
             </div>
 
             {/* Download Button */}
-            <button
-              id="download-btn"
-              className="justify-center bg-[#211C6A] gap-2 font-medium text-[18px] text-white py-2 px-5 rounded-md ml-4 mr-4 flex items-center space-x-2 hover:bg-[#747264] mt-2 md:mt-0 md:w-auto"
-              onClick={submitHandler}
-            >
-              <img src={down} alt="Download Icon" className="h-4 w-4" />
-              Download
-            </button>
+            <Button className="ml-2" size="lg" onClick={submitHandler}>Download</Button>
           </form>
         </div>
       </section>
