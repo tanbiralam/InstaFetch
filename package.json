@@ -19,7 +19,9 @@
     "@material-tailwind/react": "^2.1.2",
     "@mui/material": "^5.14.13",
     "@radix-ui/react-accordion": "^1.1.2",
+    "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-tooltip": "^1.0.7",
     "autoprefixer": "^10.4.16",
     "axios": "^1.6.2",
     "class-variance-authority": "^0.7.0",
@@ -42,7 +44,8 @@
     "react-router-dom": "^6.21.3",
     "tailwind-merge": "^2.3.0",
     "tailwindcss": "^3.3.3",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "ytdl-core": "^4.11.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
