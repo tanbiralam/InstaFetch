@@ -1,10 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import insta from "../assets/insta.webp";
 import refresh from "../assets/refresh.webp";
-
-// You'll need to add a YouTube icon to your assets folder
-// For now, we'll use a placeholder
-const youtubeIcon = "https://www.youtube.com/s/desktop/e4d15d2c/img/favicon_144x144.png";
 
 const SvgDownload = () => (
   <svg
@@ -20,176 +16,78 @@ const SvgDownload = () => (
   </svg>
 );
 
-const DownloadedContent = ({ image, video, title, thumbnail, format, fileName, platform, type, directUrl, author, onReset }) => {
+const DownloadedContent = ({ image, video, type }) => {
   const anchorRef = useRef(null);
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [downloadMessage, setDownloadMessage] = useState("");
 
   const handleSecondButtonClick = () => {
-    if (onReset) {
-      onReset();
-    } else {
-      window.location.reload();
-    }
-  };
+    window.location.reload();
+  }
+
+  
 
   const handleDownload = () => {
-    // Handle different platforms differently
-    if (platform === 'youtube') {
-      if (format && format.url) {
-        if (format.directDownload) {
-          // For demonstration purposes, we'll simulate a download
-          setIsDownloading(true);
-          setDownloadMessage("Preparing download...");
-          
-          // Simulate download process
-          setTimeout(() => {
-            setDownloadMessage("Processing video...");
-            
-            setTimeout(() => {
-              setDownloadMessage("Almost done...");
-              
-              setTimeout(() => {
-                setIsDownloading(false);
-                setDownloadMessage("");
-                
-                // Show a message explaining this is a demo
-                alert("This is a demonstration. In a production app, the video would be downloaded through a backend service. For now, you can use the 'Watch on YouTube' button to access the video.");
-              }, 1500);
-            }, 1500);
-          }, 1500);
-        } else {
-          // If not direct download, open in new tab
-          window.open(format.url, '_blank');
-        }
-      } else if (directUrl) {
-        window.open(directUrl, '_blank');
-      }
-    } else {
-      // For Instagram, use the existing download logic
-      const fileURL = type === "photo" ? image?.secure_url : video?.secure_url;
-      const downloadFileName = fileName || (type === "photo" ? "photo.jpg" : "video.mp4");
+    const fileURL = type === "photo" ? image.secure_url : video.secure_url;
+    const fileName = type === "photo" ? "photo.jpg" : "video.mp4";
 
-      if (fileURL) {
-        setIsDownloading(true);
-        setDownloadMessage("Downloading...");
-        
-        fetch(fileURL)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
-            }
-            return response.blob();
-          })
-          .then((blob) => {
-            const url = window.URL.createObjectURL(new Blob([blob]));
-            if (anchorRef.current) {
-              anchorRef.current.href = url;
-              anchorRef.current.setAttribute("download", downloadFileName);
-              anchorRef.current.click();
-            }
-            setIsDownloading(false);
-            setDownloadMessage("");
-          })
-          .catch((error) => {
-            console.error("Error downloading file:", error);
-            alert("Error downloading file. Please try again later.");
-            setIsDownloading(false);
-            setDownloadMessage("");
-          });
-      }
-    }
+    fetch(fileURL)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.blob();
+      })
+      .then((blob) => {
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        if (anchorRef.current) {
+          anchorRef.current.href = url;
+          anchorRef.current.setAttribute("download", fileName);
+          anchorRef.current.click();
+        }
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
+        // Optionally, you can inform the user about the error
+        alert("Error downloading file. Please try again later.");
+      });
   };
 
-  // Determine the content to display
-  const displayThumbnail = thumbnail || (image ? image.secure_url : null);
-  const displayTitle = title || "Download";
-  const displayPlatform = platform || "instagram";
-  const platformIcon = displayPlatform === "youtube" ? youtubeIcon : insta;
-  const platformName = displayPlatform === "youtube" ? "YouTube" : "Instagram";
-  const contentType = type || "video";
-  const displayAuthor = author || "";
-  const qualityLabel = format?.quality || "";
+
 
   return (
     <>
       <section className="flex flex-col">
         <div className="bg-white border rounded-md max-w-[400px] overflow-hidden">
           {/* Top Area */}
-          <div className="flex gap-2 items-center p-2 border-b">
+          <div className="flex gap-2 items-center p-2">
             <div className="h-[30px] w-[30px] rounded-full overflow-hidden">
-              <img src={platformIcon} alt={`${platformName} Logo`} className="w-full h-full object-contain" />
+              <img src={insta} alt="Instagram Logo" />
             </div>
-            <div className="flex-1">
-              <p className="font-medium">{platformName}</p>
-              {displayAuthor && <p className="text-xs text-gray-500">{displayAuthor}</p>}
-            </div>
-            <div className="text-xs bg-gray-100 px-2 py-1 rounded-full capitalize">
-              {contentType}
-              {qualityLabel && ` - ${qualityLabel}`}
-            </div>
+            <p className="font-medium ">Instagram</p>
           </div>
 
-          {/* Image/Thumbnail and Download Button */}
-          <div className="w-full max-w-[400px] relative">
-            <div className="relative pb-[100%]">
-              {displayThumbnail ? (
-                <img
-                  className="absolute top-0 left-0 w-full h-full object-cover"
-                  src={displayThumbnail}
-                  alt={displayTitle}
-                />
-              ) : (
-                <div className="absolute top-0 left-0 w-full h-full bg-gray-200 flex items-center justify-center">
-                  <p className="text-gray-500">No preview available</p>
-                </div>
-              )}
-              
-              {/* Download progress overlay */}
-              {isDownloading && (
-                <div className="absolute inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center text-white">
-                  <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-white mb-2"></div>
-                  <p>{downloadMessage}</p>
-                </div>
-              )}
-            </div>
-            
-            {/* Title overlay */}
-            <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 truncate">
-              {displayTitle}
-            </div>
-
-            <div className="px-4 absolute bottom-12 w-full">
+          {/* Image and Download Button */}
+          <div className="w-[400px] h-[400px] relative">
+            <img
+              className="w-full h-full object-cover"
+              src={image.secure_url}
+              alt=""
+            />
+            <div className="px-4 absolute bottom-2 w-full">
               <button
                 type="button"
-                className={`flex justify-center items-center bg-gradient-to-r from-purple-600 to-pink-500 text-white py-2 px-4 rounded-md hover:from-purple-700 hover:to-pink-600 focus:outline-none focus:ring focus:ring-purple-300 w-full transition-all duration-300 ${isDownloading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className="flex justify-center items-center bg-[#607274] text-white py-2 px-4 rounded-md hover:bg-[#B2A59B] focus:outline-none focus:ring focus:ring-blue-300 w-full"
                 onClick={handleDownload}
-                disabled={isDownloading}
               >
-                {!isDownloading && <SvgDownload />}
-                <span className="ml-3">{isDownloading ? downloadMessage : "Download Now"}</span>
+                <SvgDownload />
+                <span className="ml-3">Download Now</span>
               </button>
             </div>
-
-            {/* Watch on YouTube button (only for YouTube content) */}
-            {platform === 'youtube' && directUrl && (
-              <div className="px-4 absolute bottom-2 w-full">
-                <a
-                  href={directUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex justify-center items-center bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring focus:ring-red-300 w-full transition-all duration-300"
-                >
-                  <span>Watch on YouTube</span>
-                </a>
-              </div>
-            )}
           </div>
         </div>
 
         <button
           type="button"
-          className="flex justify-center mt-2 items-center bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-800 focus:outline-none focus:ring focus:ring-gray-300 w-full transition-all duration-300"
+          className="flex justify-center mt-2 items-center bg-[#95a4a7] text-white py-2 px-4 rounded-md focus:outline-none focus:ring focus:ring-blue-300 w-full"
           onClick={handleSecondButtonClick}
         >
           <img src={refresh} alt="refresh" className="h-[20px] w-[20px]" />
