@@ -264,7 +264,7 @@ export default function DownloadResults({
                 <button
                   onClick={() => handleDownload(item)}
                   disabled={downloadingItems.has(item.id)}
-                  className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 rounded-lg font-medium hover:from-pink-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-200 btn-hover-lift"
+                  className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-opacity duration-200"
                 >
                   {downloadingItems.has(item.id) ? (
                     <>
@@ -294,7 +294,7 @@ export default function DownloadResults({
                 });
               }}
               disabled={downloadingItems.size > 0}
-              className="w-full flex items-center justify-center space-x-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 py-3 rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-200 btn-hover-lift"
+              className="w-full flex items-center justify-center space-x-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 py-3 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-opacity duration-200"
             >
               <Download className="w-5 h-5" />
               <span>Download All ({results.media.length} items)</span>
@@ -307,7 +307,7 @@ export default function DownloadResults({
           <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
             <button
               onClick={onDownloadAnother}
-              className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-lg font-medium hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-200 btn-hover-lift"
+              className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-lg font-medium transition-opacity duration-200"
             >
               <svg
                 className="w-5 h-5"

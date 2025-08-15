@@ -57,14 +57,6 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* Download Button */}
-          <div className="hidden md:flex items-center">
-            <button className="flex items-center space-x-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2.5 rounded-full font-medium hover:from-pink-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 btn-hover-lift">
-              <Download className="w-4 h-4" />
-              <span>Download Now</span>
-            </button>
-          </div>
-
           {/* Mobile menu button */}
           <div className="md:hidden">
             <button

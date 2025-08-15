@@ -151,7 +151,11 @@ export class InstagramApiService {
           resultsLimit: 200,
           searchType: "hashtag",
           searchLimit: 1,
-          addParentData: false,
+          addParentData: true, // Enable parent data to get carousel info
+          enhanceUserInformation: true,
+          isUserTaggedFeedURL: false,
+          onlyPostsWithLocation: false,
+          likedByInfluencer: false,
         };
 
         // Run the Actor and wait for it to finish
@@ -225,17 +229,54 @@ export class InstagramApiService {
     } else if (post.type === "GraphVideo") {
       // Video post
       media.push(this.createMediaItem(post, "video"));
-    } else if (post.type === "GraphSidecar" && post.childPosts) {
+    } else if (post.type === "GraphSidecar") {
       // Carousel post with multiple media
-      post.childPosts.forEach((childPost, index) => {
-        const mediaType = childPost.type === "GraphVideo" ? "video" : "image";
-        media.push(this.createMediaItem(childPost, mediaType, index));
+      this.log("debug", "Found carousel post", {
+        postId: post.id,
+        hasChildPosts: !!post.childPosts,
+        childPostsLength: post.childPosts?.length || 0,
+        postKeys: Object.keys(post),
       });
 
-      this.log("debug", "Processing carousel post", {
-        childPostsCount: post.childPosts.length,
-        mediaItemsCreated: media.length,
-      });
+      if (post.childPosts && post.childPosts.length > 0) {
+        post.childPosts.forEach((childPost, index) => {
+          const mediaType = childPost.type === "GraphVideo" ? "video" : "image";
+          media.push(this.createMediaItem(childPost, mediaType, index));
+        });
+
+        this.log("debug", "Processing carousel post", {
+          childPostsCount: post.childPosts.length,
+          mediaItemsCreated: media.length,
+        });
+      } else {
+        // Fallback: try to extract multiple media from the main post
+        this.log("debug", "No childPosts found, trying alternative approach");
+
+        // Check if there are multiple image resources
+        if (post.imageResources && post.imageResources.length > 1) {
+          post.imageResources.forEach((imageResource, index) => {
+            const mediaItem: MediaItem = {
+              id: `${post.id}_img_${index}`,
+              type: "image",
+              thumbnail: imageResource.url,
+              downloadUrl: imageResource.url,
+              quality: "HD",
+              resolution: `${imageResource.width}x${imageResource.height}`,
+              size: this.estimateImageSize(
+                imageResource.width || 0,
+                imageResource.height || 0
+              ),
+              format: "jpg",
+            };
+            media.push(mediaItem);
+          });
+        } else {
+          // Single media item fallback
+          media.push(
+            this.createMediaItem(post, post.videoUrl ? "video" : "image")
+          );
+        }
+      }
     }
 
     // If no media was processed, create a fallback
