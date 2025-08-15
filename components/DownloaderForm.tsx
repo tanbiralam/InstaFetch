@@ -73,7 +73,7 @@ export default function DownloaderForm({
         setError("");
         toast.success("URL pasted from clipboard");
       }
-    } catch (err) {
+    } catch {
       toast.error("Failed to paste from clipboard");
     }
   };

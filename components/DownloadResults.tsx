@@ -1,15 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Download,
-  Image,
-  Video,
-  FileText,
-  Eye,
-  Clock,
-  Calendar,
-} from "lucide-react";
+import { Download, Image, Video, FileText, Eye, Calendar } from "lucide-react";
 import toast from "react-hot-toast";
 
 interface MediaItem {
@@ -169,7 +161,7 @@ export default function DownloadResults({
                     src={`/api/media?url=${encodeURIComponent(
                       item.thumbnail
                     )}&filename=thumbnail.jpg`}
-                    alt={`${item.type} preview`}
+                    alt={`${item.type} preview for ${item.id}`}
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       // First fallback: try original thumbnail URL

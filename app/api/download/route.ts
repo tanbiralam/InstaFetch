@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createInstagramApiService } from "@/lib/api-service";
-import { DownloadResult } from "@/types";
 
 // Initialize API service
 const apiService = createInstagramApiService();

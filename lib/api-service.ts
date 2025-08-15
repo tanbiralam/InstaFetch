@@ -112,7 +112,7 @@ export class InstagramApiService {
       };
     } catch (error) {
       const duration = Date.now() - startTime;
-      const apiError = this.handleError(error, url);
+      const apiError = this.handleError(error);
 
       this.log("error", "Failed to fetch Instagram data", {
         url,
@@ -516,7 +516,7 @@ export class InstagramApiService {
   /**
    * Error handling
    */
-  private handleError(error: unknown, url?: string): ApiError {
+  private handleError(error: unknown): ApiError {
     const timestamp = new Date().toISOString();
 
     if (error instanceof Error) {

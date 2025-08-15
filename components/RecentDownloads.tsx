@@ -98,7 +98,7 @@ export default function RecentDownloads() {
   // Expose addToHistory function globally so other components can use it
   useEffect(() => {
     window.addToDownloadHistory = addToHistory;
-  }, [history]);
+  }, [addToHistory]);
 
   if (history.length === 0) {
     return null;
@@ -148,7 +148,7 @@ export default function RecentDownloads() {
                   {item.thumbnail ? (
                     <img
                       src={item.thumbnail}
-                      alt="Thumbnail"
+                      alt={`Thumbnail for ${item.author || "Instagram post"}`}
                       className="w-12 h-12 rounded-lg object-cover"
                     />
                   ) : (
