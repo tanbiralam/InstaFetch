@@ -1,75 +1,36 @@
-# InstaFetch
-
-InstaFetcher is an open-source Instagram media downloader that allows users to effortlessly download photos, videos, and reels from Instagram. Whether you want to save your favorite content for offline viewing, sharing, or archiving, InstaFetcher has got you covered.
-
-## Features
-
-- Download Instagram photos, videos, and reels with ease.
-- Simple and intuitive user interface.
-- Open-source project, welcoming contributions from the community.
-- Built with React and Tailwind CSS.
-- Responsive design for optimal viewing on all devices.
-
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
-To get started with InstaFetcher, follow these steps:
-
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/tanbiralam/InstaFetch.git
-```
-
-2. Navigate to the project directory:
-
-```bash
-cd InstaFetcher
-```
-
-3. Install dependencies:
-
-```bash
-npm install
-```
-
-4. Set up the environment variables by creating a `.env` file in the root directory of the project.
-
-**Environment Variables:**
-- `VITE_API_KEY`: API key for accessing Cloudinary API.
-- `VITE_CLOUDINARY_API_URL`: Cloudinary API URL for uploading images.
-- `VITE_CLOUDINARY_PRESET`: Preset for Cloudinary upload.
-
-5. Run the development server:
+First, run the development server:
 
 ```bash
 npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-6. Open your browser and visit `http://localhost:3000` to use InstaFetcher.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Usage
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-1. Enter the link of the Instagram post/video/story you wish to download.
-2. Select the media type (photo, video, reel) if applicable.
-3. Click the download button to save the media to your device.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Contributing
+## Learn More
 
-Contributions are welcome and encouraged! To contribute to InstaFetcher, please follow these steps:
+To learn more about Next.js, take a look at the following resources:
 
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/my-feature`).
-3. Make your changes and commit them (`git commit -am 'Add new feature'`).
-4. Push to the branch (`git push origin feature/my-feature`).
-5. Create a new pull request.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## Support
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-If you encounter any issues or have any questions or suggestions, feel free to open an issue on the [GitHub repository](https://github.com/tanbiralam/InstaFetch/issues). You can also reach out to the project maintainers for assistance.
+## Deploy on Vercel
 
-## License
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/tanbiralam/InstaFetch/blob/main/LICENCE) file for details.
-
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
