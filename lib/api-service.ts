@@ -106,7 +106,7 @@ export class InstagramApiService {
 
       return {
         success: true,
-        data: transformedData,
+        data: transformedData || undefined,
         cached: false,
         rateLimitInfo: this.getRateLimitInfo(),
       };
@@ -173,7 +173,7 @@ export class InstagramApiService {
           datasetId: run.defaultDatasetId,
         });
 
-        return { items: items as ApifyPostData[] };
+        return { items: items as unknown as ApifyPostData[] };
       } catch (error) {
         lastError = error as Error;
 
@@ -230,6 +230,11 @@ export class InstagramApiService {
       post.childPosts.forEach((childPost, index) => {
         const mediaType = childPost.type === "GraphVideo" ? "video" : "image";
         media.push(this.createMediaItem(childPost, mediaType, index));
+      });
+
+      this.log("debug", "Processing carousel post", {
+        childPostsCount: post.childPosts.length,
+        mediaItemsCreated: media.length,
       });
     }
 

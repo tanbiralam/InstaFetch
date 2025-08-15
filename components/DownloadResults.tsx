@@ -32,11 +32,13 @@ interface DownloadResultsProps {
     media: MediaItem[];
   } | null;
   isLoading: boolean;
+  onDownloadAnother?: () => void;
 }
 
 export default function DownloadResults({
   results,
   isLoading,
+  onDownloadAnother,
 }: DownloadResultsProps) {
   const [downloadingItems, setDownloadingItems] = useState<Set<string>>(
     new Set()
@@ -167,11 +169,23 @@ export default function DownloadResults({
                     src={item.thumbnail}
                     alt={`${item.type} preview`}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      // Fallback for broken thumbnails
+                      const target = e.target as HTMLImageElement;
+                      target.src = `data:image/svg+xml;base64,${btoa(`
+                        <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+                          <rect width="200" height="200" fill="#f3f4f6"/>
+                          <text x="100" y="100" text-anchor="middle" dy=".3em" fill="#9ca3af" font-family="Arial" font-size="14">
+                            ${item.type === "video" ? "Video" : "Image"}
+                          </text>
+                        </svg>
+                      `)}`;
+                    }}
                   />
                   {item.type === "video" && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                      <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
-                        <Video className="w-6 h-6 text-gray-800" />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                      <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                        <Video className="w-6 h-6 text-gray-800 ml-0.5" />
                       </div>
                     </div>
                   )}
@@ -277,6 +291,31 @@ export default function DownloadResults({
             >
               <Download className="w-5 h-5" />
               <span>Download All ({results.media.length} items)</span>
+            </button>
+          </div>
+        )}
+
+        {/* Download Another Button */}
+        {onDownloadAnother && (
+          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <button
+              onClick={onDownloadAnother}
+              className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-lg font-medium hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-200 btn-hover-lift"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              <span>Download Another Video</span>
             </button>
           </div>
         )}

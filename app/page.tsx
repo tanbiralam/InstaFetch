@@ -83,6 +83,16 @@ export default function Home() {
     }
   };
 
+  const handleDownloadAnother = () => {
+    setResults(null);
+    setIsLoading(false);
+    // Scroll back to the form
+    const formElement = document.getElementById("home");
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <Toaster
@@ -122,7 +132,11 @@ export default function Home() {
         {/* Results Section */}
         {(results || isLoading) && (
           <section className="py-8">
-            <DownloadResults results={results} isLoading={isLoading} />
+            <DownloadResults
+              results={results}
+              isLoading={isLoading}
+              onDownloadAnother={handleDownloadAnother}
+            />
           </section>
         )}
 

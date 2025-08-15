@@ -92,7 +92,7 @@ export default function DownloaderForm({
                 value={url}
                 onChange={handleUrlChange}
                 placeholder="Paste Instagram link here (post, reel, or story)"
-                className={`w-full pl-12 pr-4 py-4 text-lg border-2 rounded-l-2xl md:rounded-l-full md:rounded-r-none rounded-r-2xl focus:outline-none focus:ring-0 transition-all duration-200 ${
+                className={`w-full pl-12 pr-20 py-4 text-lg border-2 rounded-l-2xl md:rounded-l-full md:rounded-r-none rounded-r-2xl focus:outline-none focus:ring-0 transition-all duration-200 ${
                   error
                     ? "border-red-500 focus:border-red-500"
                     : "border-gray-300 focus:border-pink-500 dark:border-gray-600 dark:focus:border-pink-400"
@@ -102,7 +102,7 @@ export default function DownloaderForm({
               <button
                 type="button"
                 onClick={pasteFromClipboard}
-                className="absolute inset-y-0 right-0 pr-4 flex items-center text-sm text-pink-600 hover:text-pink-700 dark:text-pink-400 dark:hover:text-pink-300 font-medium transition-colors"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-sm text-pink-600 hover:text-pink-700 dark:text-pink-400 dark:hover:text-pink-300 font-medium transition-colors bg-white dark:bg-gray-800 rounded-r-lg"
                 disabled={isLoading}
               >
                 Paste
@@ -155,51 +155,6 @@ export default function DownloaderForm({
           </div>
         )}
       </form>
-
-      {/* Instructions */}
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-        <div className="flex flex-col items-center space-y-2">
-          <div className="w-12 h-12 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center">
-            <span className="text-pink-600 dark:text-pink-400 font-bold text-lg">
-              1
-            </span>
-          </div>
-          <h3 className="font-semibold text-gray-900 dark:text-white">
-            Copy Link
-          </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Copy the Instagram post, reel, or story URL
-          </p>
-        </div>
-
-        <div className="flex flex-col items-center space-y-2">
-          <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
-            <span className="text-purple-600 dark:text-purple-400 font-bold text-lg">
-              2
-            </span>
-          </div>
-          <h3 className="font-semibold text-gray-900 dark:text-white">
-            Paste & Download
-          </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Paste the URL above and click download
-          </p>
-        </div>
-
-        <div className="flex flex-col items-center space-y-2">
-          <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-            <span className="text-green-600 dark:text-green-400 font-bold text-lg">
-              3
-            </span>
-          </div>
-          <h3 className="font-semibold text-gray-900 dark:text-white">
-            Save Media
-          </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Choose quality and save to your device
-          </p>
-        </div>
-      </div>
     </div>
   );
 }
