@@ -1,20 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Download, Link, Loader2, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
 
 interface DownloaderFormProps {
   onSubmit: (url: string) => void;
   isLoading: boolean;
+  inputValue?: string;
+  onInputChange?: (value: string) => void;
 }
 
 export default function DownloaderForm({
   onSubmit,
   isLoading,
+  inputValue,
+  onInputChange,
 }: DownloaderFormProps) {
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState(inputValue || "");
   const [error, setError] = useState("");
+
+  // Update local state when inputValue prop changes
+  useEffect(() => {
+    setUrl(inputValue || "");
+  }, [inputValue]);
 
   const validateInstagramUrl = (url: string): boolean => {
     const instagramRegex =
@@ -44,6 +53,11 @@ export default function DownloaderForm({
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newUrl = e.target.value;
     setUrl(newUrl);
+
+    // Update parent component if callback provided
+    if (onInputChange) {
+      onInputChange(newUrl);
+    }
 
     // Clear error when user starts typing
     if (error) {

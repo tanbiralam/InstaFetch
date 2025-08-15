@@ -166,20 +166,27 @@ export default function DownloadResults({
               <div className="relative mb-4 group">
                 <div className="aspect-square rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700">
                   <img
-                    src={item.thumbnail}
+                    src={`/api/media?url=${encodeURIComponent(
+                      item.thumbnail
+                    )}&filename=thumbnail.jpg`}
                     alt={`${item.type} preview`}
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      // Fallback for broken thumbnails
+                      // First fallback: try original thumbnail URL
                       const target = e.target as HTMLImageElement;
-                      target.src = `data:image/svg+xml;base64,${btoa(`
-                        <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-                          <rect width="200" height="200" fill="#f3f4f6"/>
-                          <text x="100" y="100" text-anchor="middle" dy=".3em" fill="#9ca3af" font-family="Arial" font-size="14">
-                            ${item.type === "video" ? "Video" : "Image"}
-                          </text>
-                        </svg>
-                      `)}`;
+                      if (target.src.includes("/api/media")) {
+                        target.src = item.thumbnail;
+                      } else {
+                        // Final fallback: SVG placeholder
+                        target.src = `data:image/svg+xml;base64,${btoa(`
+                          <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="200" height="200" fill="#f3f4f6"/>
+                            <text x="100" y="100" text-anchor="middle" dy=".3em" fill="#9ca3af" font-family="Arial" font-size="14">
+                              ${item.type === "video" ? "Video" : "Image"}
+                            </text>
+                          </svg>
+                        `)}`;
+                      }
                     }}
                   />
                   {item.type === "video" && (

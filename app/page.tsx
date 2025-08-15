@@ -8,7 +8,7 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import DownloaderForm from "../components/DownloaderForm";
 import DownloadResults from "../components/DownloadResults";
-import RecentDownloads from "../components/RecentDownloads";
+import AboutSection from "../components/AboutSection";
 import Footer from "../components/Footer";
 
 interface MediaItem {
@@ -33,10 +33,12 @@ interface DownloadResult {
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<DownloadResult | null>(null);
+  const [inputUrl, setInputUrl] = useState("");
 
   const handleDownload = async (url: string) => {
     setIsLoading(true);
     setResults(null);
+    setInputUrl(url);
 
     try {
       const response = await axios.post("/api/download", { url });
@@ -86,6 +88,7 @@ export default function Home() {
   const handleDownloadAnother = () => {
     setResults(null);
     setIsLoading(false);
+    setInputUrl(""); // Clear the input field
     // Scroll back to the form
     const formElement = document.getElementById("home");
     if (formElement) {
@@ -126,7 +129,12 @@ export default function Home() {
       <main className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <section id="home" className="py-12">
-          <DownloaderForm onSubmit={handleDownload} isLoading={isLoading} />
+          <DownloaderForm
+            onSubmit={handleDownload}
+            isLoading={isLoading}
+            inputValue={inputUrl}
+            onInputChange={setInputUrl}
+          />
         </section>
 
         {/* Results Section */}
@@ -139,11 +147,6 @@ export default function Home() {
             />
           </section>
         )}
-
-        {/* Recent Downloads */}
-        <section className="py-8">
-          <RecentDownloads />
-        </section>
 
         {/* Features Section */}
         <section id="features" className="py-16">
@@ -362,6 +365,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* About Section */}
+        <AboutSection />
 
         {/* FAQ Section */}
         <section id="faq" className="py-16">
