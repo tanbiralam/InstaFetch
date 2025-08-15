@@ -46,10 +46,21 @@ export default function DownloadResults({
     setDownloadingItems((prev) => new Set(prev).add(item.id));
 
     try {
+      // Generate filename
+      const filename = `instagram_${item.type}_${item.quality}_${Date.now()}.${
+        item.format
+      }`;
+
+      // Use our proxy endpoint to download the media
+      const proxyUrl = `/api/media?url=${encodeURIComponent(
+        item.downloadUrl
+      )}&filename=${encodeURIComponent(filename)}`;
+
       // Create a temporary link to trigger download
       const link = document.createElement("a");
-      link.href = item.downloadUrl;
-      link.download = `instagram_${item.type}_${item.quality}.${item.format}`;
+      link.href = proxyUrl;
+      link.download = filename;
+      link.style.display = "none";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -58,7 +69,8 @@ export default function DownloadResults({
         `${item.type === "video" ? "Video" : "Image"} download started`
       );
     } catch (error) {
-      toast.error("Failed to download media");
+      console.error("Download error:", error);
+      toast.error("Failed to download media. Please try again.");
     } finally {
       setDownloadingItems((prev) => {
         const newSet = new Set(prev);
@@ -254,8 +266,14 @@ export default function DownloadResults({
         {results.media.length > 1 && (
           <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
             <button
-              onClick={() => results.media.forEach(handleDownload)}
-              className="w-full flex items-center justify-center space-x-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 py-3 rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 btn-hover-lift"
+              onClick={() => {
+                // Download all items with a small delay between each to avoid overwhelming the server
+                results.media.forEach((item, index) => {
+                  setTimeout(() => handleDownload(item), index * 500);
+                });
+              }}
+              disabled={downloadingItems.size > 0}
+              className="w-full flex items-center justify-center space-x-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 py-3 rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-200 btn-hover-lift"
             >
               <Download className="w-5 h-5" />
               <span>Download All ({results.media.length} items)</span>

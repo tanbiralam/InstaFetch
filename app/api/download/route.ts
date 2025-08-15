@@ -1,71 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
+import { createInstagramApiService } from "@/lib/api-service";
+import { DownloadResult } from "@/types";
 
-// Mock data for demonstration - In production, you would use a real Instagram API service
-const mockInstagramData = {
-  "https://www.instagram.com/p/sample1/": {
-    url: "https://www.instagram.com/p/sample1/",
-    caption:
-      "Beautiful sunset at the beach! 🌅 #sunset #beach #nature #photography",
-    author: "@nature_photographer",
-    timestamp: "2024-01-15T18:30:00Z",
-    media: [
-      {
-        id: "1",
-        type: "image" as const,
-        thumbnail: "https://picsum.photos/400/400?random=1",
-        downloadUrl: "https://picsum.photos/1080/1080?random=1",
-        quality: "HD",
-        resolution: "1080x1080",
-        size: "2.4 MB",
-        format: "jpg",
-      },
-      {
-        id: "2",
-        type: "image" as const,
-        thumbnail: "https://picsum.photos/400/400?random=2",
-        downloadUrl: "https://picsum.photos/1080/1080?random=2",
-        quality: "HD",
-        resolution: "1080x1080",
-        size: "2.1 MB",
-        format: "jpg",
-      },
-    ],
-  },
-  "https://www.instagram.com/reel/sample2/": {
-    url: "https://www.instagram.com/reel/sample2/",
-    caption:
-      "Amazing dance moves! 💃 Follow for more content #dance #viral #trending",
-    author: "@dance_creator",
-    timestamp: "2024-01-14T12:15:00Z",
-    media: [
-      {
-        id: "3",
-        type: "video" as const,
-        thumbnail: "https://picsum.photos/400/400?random=3",
-        downloadUrl:
-          "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-        quality: "720p",
-        resolution: "720x1280",
-        size: "15.2 MB",
-        format: "mp4",
-      },
-      {
-        id: "4",
-        type: "video" as const,
-        thumbnail: "https://picsum.photos/400/400?random=3",
-        downloadUrl:
-          "https://sample-videos.com/zip/10/mp4/SampleVideo_640x360_1mb.mp4",
-        quality: "360p",
-        resolution: "360x640",
-        size: "8.1 MB",
-        format: "mp4",
-      },
-    ],
-  },
-};
+// Initialize API service
+const apiService = createInstagramApiService();
 
 export async function POST(request: NextRequest) {
+  const startTime = Date.now();
+
   try {
     const { url } = await request.json();
 
@@ -83,81 +25,93 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // Log request
+    console.log(`[API] Processing Instagram URL: ${url}`);
 
-    // For demo purposes, use mock data
-    // In production, you would integrate with a real Instagram API service like:
-    // - RapidAPI Instagram Downloader
-    // - Instagram Basic Display API
-    // - Third-party scraping services
+    // Fetch data using the API service
+    const apiResponse = await apiService.fetchInstagramData(url);
 
-    const normalizedUrl = url.split("?")[0]; // Remove query parameters
-    let mockData =
-      mockInstagramData[normalizedUrl as keyof typeof mockInstagramData];
+    if (!apiResponse.success) {
+      const duration = Date.now() - startTime;
+      console.error(
+        `[API] Request failed after ${duration}ms:`,
+        apiResponse.error
+      );
 
-    if (!mockData) {
-      // Generate random mock data for any Instagram URL
-      const isVideo = url.includes("/reel/") || url.includes("/tv/");
-      mockData = {
-        url: normalizedUrl,
-        caption: isVideo
-          ? "Check out this amazing video! 🎥 #video #content #instagram"
-          : "Beautiful photo shared on Instagram! 📸 #photo #instagram #content",
-        author: "@instagram_user",
-        timestamp: new Date().toISOString(),
-        media: [
-          {
-            id: Date.now().toString(),
-            type: isVideo ? ("video" as const) : ("image" as const),
-            thumbnail: `https://picsum.photos/400/400?random=${Math.floor(
-              Math.random() * 1000
-            )}`,
-            downloadUrl: isVideo
-              ? "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4"
-              : `https://picsum.photos/1080/1080?random=${Math.floor(
-                  Math.random() * 1000
-                )}`,
-            quality: isVideo ? "720p" : "HD",
-            resolution: isVideo ? "720x1280" : "1080x1080",
-            size: isVideo ? "12.5 MB" : "2.8 MB",
-            format: isVideo ? "mp4" : "jpg",
+      // Return appropriate error response based on the error type
+      const statusCode = apiResponse.error?.statusCode || 500;
+      return NextResponse.json(
+        {
+          error:
+            apiResponse.error?.message ||
+            "Failed to process Instagram URL. Please try again.",
+          code: apiResponse.error?.code,
+          meta: {
+            duration,
+            source: "api_error",
+            rateLimitInfo: apiResponse.rateLimitInfo,
           },
-        ],
-      };
+        },
+        { status: statusCode }
+      );
     }
 
-    return NextResponse.json({
+    const duration = Date.now() - startTime;
+    console.log(
+      `[API] Request completed in ${duration}ms (cached: ${apiResponse.cached})`
+    );
+
+    // Return successful response with metadata
+    const response = {
       success: true,
-      data: mockData,
-    });
+      data: apiResponse.data,
+      meta: {
+        cached: apiResponse.cached || false,
+        duration,
+        rateLimitInfo: apiResponse.rateLimitInfo,
+        source: apiResponse.cached ? "cache" : "api",
+      },
+    };
+
+    return NextResponse.json(response);
   } catch (error) {
-    console.error("Download API error:", error);
+    const duration = Date.now() - startTime;
+    console.error(`[API] Unexpected error after ${duration}ms:`, error);
+
     return NextResponse.json(
-      { error: "Failed to process Instagram URL. Please try again." },
+      {
+        error: "An unexpected error occurred. Please try again.",
+        meta: {
+          duration,
+          source: "system_error",
+        },
+      },
       { status: 500 }
     );
   }
 }
 
-// Example of how you might integrate with a real API service:
-/*
-async function fetchFromRealAPI(url: string) {
-  const options = {
-    method: 'GET',
-    url: 'https://instagram-downloader-download-instagram-videos-stories.p.rapidapi.com/index',
-    params: { url },
-    headers: {
-      'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
-      'X-RapidAPI-Host': 'instagram-downloader-download-instagram-videos-stories.p.rapidapi.com'
-    }
-  };
-
+/**
+ * Health check endpoint to verify API service status
+ */
+export async function GET() {
   try {
-    const response = await axios.request(options);
-    return response.data;
+    const status: Record<string, unknown> = {
+      service: "Instagram Download API",
+      timestamp: new Date().toISOString(),
+      apiServiceAvailable: true,
+      environment: process.env.NODE_ENV || "development",
+      cacheStats: apiService.getCacheStats(),
+      rateLimitStatus: apiService.getRateLimitStatus(),
+    };
+
+    return NextResponse.json(status);
   } catch (error) {
-    throw new Error('Failed to fetch from Instagram API');
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json(
+      { error: "Health check failed", details: errorMessage },
+      { status: 500 }
+    );
   }
 }
-*/
