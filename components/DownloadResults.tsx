@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
@@ -206,6 +207,7 @@ export default function DownloadResults({
                     {item.type === "video" ? (
                       <Video className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                     ) : (
+                      // eslint-disable-next-line jsx-a11y/alt-text
                       <Image className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     )}
                     <span className="font-medium text-gray-900 dark:text-white capitalize">

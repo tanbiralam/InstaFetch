@@ -1,6 +1,7 @@
+/* eslint-disable jsx-a11y/alt-text */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Clock, Trash2, ExternalLink, Image, Video } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -34,28 +35,34 @@ export default function RecentDownloads() {
     }
   };
 
-  const addToHistory = (item: Omit<DownloadHistory, "id" | "timestamp">) => {
-    const newItem: DownloadHistory = {
-      ...item,
-      id: Date.now().toString(),
-      timestamp: Date.now(),
-    };
+  const addToHistory = useCallback(
+    (item: Omit<DownloadHistory, "id" | "timestamp">) => {
+      const newItem: DownloadHistory = {
+        ...item,
+        id: Date.now().toString(),
+        timestamp: Date.now(),
+      };
 
-    const updatedHistory = [
-      newItem,
-      ...history.filter((h) => h.url !== item.url),
-    ].slice(0, 10);
-    setHistory(updatedHistory);
+      setHistory((prevHistory) => {
+        const updatedHistory = [
+          newItem,
+          ...prevHistory.filter((h) => h.url !== item.url),
+        ].slice(0, 10);
 
-    try {
-      localStorage.setItem(
-        "instafetch_history",
-        JSON.stringify(updatedHistory)
-      );
-    } catch (error) {
-      console.error("Failed to save history:", error);
-    }
-  };
+        try {
+          localStorage.setItem(
+            "instafetch_history",
+            JSON.stringify(updatedHistory)
+          );
+        } catch (error) {
+          console.error("Failed to save history:", error);
+        }
+
+        return updatedHistory;
+      });
+    },
+    []
+  );
 
   const clearHistory = () => {
     setHistory([]);
@@ -146,6 +153,7 @@ export default function RecentDownloads() {
                 {/* Thumbnail or Icon */}
                 <div className="flex-shrink-0">
                   {item.thumbnail ? (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={item.thumbnail}
                       alt={`Thumbnail for ${item.author || "Instagram post"}`}
